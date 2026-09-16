@@ -3,8 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/UnitTests/JUnit5TestClass.java to edit this template
  */
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.AfterAll;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -54,14 +53,27 @@ class LoginTest {
      void checkCellPhoneNumber_IncorrectlyFormatted_ReturnsFalse(){
          assertFalse(login.checkCellPhoneNumber("08966553"));
      }
-     
-    @AfterEach
-    public void tearDown() {
+
+    @Test 
+    void loginUser_CorrectCredentials_ReturnsTrue() {
+        login.registerUser("Kyle", "Peters", "kyl_1", "Ch&&sec@ke99!", "+27838968976");
+        assertTrue(login.loginUser("kyl_1", "Ch&&sec@ke99!"));
     }
 
-    // TODO add test methods here.
-    // The methods must be annotated with annotation @Test. For example:
-    //
-    // @Test
-    // public void hello() {}
+    @Test
+    void loginUser_IncorrectCredentials_ReturnsFalse() {
+        login.registerUser("Kyle", "Peters", "kyl_1", "Ch&&sec@ke99!", "+27838968976");
+        assertFalse(login.loginUser("kyl_1", "wrongPassword1!"));
+    }
+
+    //---------- assertEquals Tests (registerUser messages) -----------
+
+    @Test
+    void registerUser_UsernameIncorrectlyFormatted_ReturnsUsernameMessage() {
+        String result = login.registerUser("Kyle", "Peters", "kyle!!!!!!",
+                "Ch&&sec@ke99!", "+27838968976");
+        assertEquals("Username is not correctly formatted; please ensure that "
+                + "your username contains an underscore and is no more than "
+                + "five characters in length.", result);
+    }
 }
